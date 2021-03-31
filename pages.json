@@ -27,6 +27,15 @@
                     "path" : "goods_list/goods_list",
                     "style" : {}
                 }
+                ,{
+                    "path" : "search/search",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
             ]
     }],
 	"globalStyle": {
@@ -34,7 +43,14 @@
 	"navigationBarTitleText": "黑马优购",
 	"navigationBarBackgroundColor": "#C0C0C0",
 	"backgroundColor": "#FFFFFF"
-	},
+	},
+  "easycom":{
+    "autoscan": true,
+      "custom": {
+          // uni-ui 规则如下配置
+          "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+      }
+  },
   "tabBar": {
       "selectedColor": "#000000",
       "list": [
