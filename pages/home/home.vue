@@ -1,28 +1,34 @@
 <template>
-  <!-- 轮播图区域 -->
-	<view>
-		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :circular="true" :duration="1000">
-      <swiper-item v-for="{{item,i}} in swiperList" :key="i">
+  <view>
+    <!-- 搜索组件 -->
+    <view class="search-box">
+      <my-search @click="gotoSearch"></my-search>
+    </view>
+
+    <!-- 轮播图的区域 -->
+    <swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" :circular="true">
+      <swiper-item v-for="(item,i) in swiperList" :key="i">
         <navigator class="swiper-item" :url="'/subpkg/goods_detail/goods_detail?goods_id=' + item.goods_id">
           <image :src="item.image_src"></image>
         </navigator>
       </swiper-item>
     </swiper>
-    
+
     <!-- 分类导航区域 -->
     <view class="nav-list">
-       <view class="nav-item" v-for="(item, i) in navList" :key="i" @click="navClickHandler(item)">
-         <image :src="item.image_src" class="nav-img"></image>
-       </view>
+      <view class="nav-item" v-for="(item, i) in navList" :key="i" @click="navClickHandler(item)">
+        <image :src="item.image_src" class="nav-img"></image>
+      </view>
     </view>
-    
+
     <!-- 楼层区域 -->
+    <!-- 楼层的容器 -->
     <view class="floor-list">
-      <!-- 楼层 item 项 -->
+      <!-- 每一个楼层的 item 项 -->
       <view class="floor-item" v-for="(item, i) in floorList" :key="i">
-        <!-- 楼层标题 -->
+        <!-- 楼层的标题 -->
         <image :src="item.floor_title.image_src" class="floor-title"></image>
-        <!-- 楼层图片区域 -->
+        <!-- 楼层的图片区域 -->
         <view class="floor-img-box">
           <!-- 左侧大图片的盒子 -->
           <navigator class="left-img-box" :url="item.product_list[0].url">
@@ -30,15 +36,14 @@
           </navigator>
           <!-- 右侧 4 个小图片的盒子 -->
           <view class="right-img-box">
-            <navigator class="right-img-item" v-for="(item2, i2) in item.product_list" :key="i2" v-if="i2 !== 0" :url="item2.url>
-              <image :src="item2.image_src" mode="widthFix" :style="{width: item2.image_width + 'rpx'}"></image>
+            <navigator class="right-img-item" v-for="(item2, i2) in item.product_list" :key="i2" v-if="i2 !== 0" :url="item2.url">
+              <image :src="item2.image_src" :style="{width: item2.image_width + 'rpx'}" mode="widthFix"></image>
             </navigator>
           </view>
         </view>
       </view>
     </view>
-    
-	</view>
+  </view>
 </template>
 
 <script>
@@ -56,7 +61,7 @@
     onLoad() {
       this.getSwiperList();
       this.getNavList();
-      this .getFlooList();
+      this.getFloorList();
     },
     methods:{
       //使用 asyc await 来处理异步请求结构条理更清晰明了，防止回调地狱的出现。
@@ -74,25 +79,29 @@
       
       
       navClickHandler(item) {
-          if(item.name === '分类'){
-            uni.switchTab({
+        if(item.name === '分类'){
+          uni.switchTab({
               url:'/pages/cate/cate'
-            })
-          }
-        },
-        async getNavList(){
+          })
+        }
+      },
+      
+      async getNavList(){
           const {data: res} = await uni.$http.get('/api/public/v1/home/catitems');
-          if(res.meta.status !== 200) return uni.$showMsg();
+          if(res.meta.status !== 200) {
+            return uni.$showMsg();
+            }
           this.navList = res.message;
       },
+      
+// 3. 定义获取楼层列表数据的方法
+      async getFloorList() {
+        const { data: res } = await uni.$http.get('/api/public/v1/home/floordata')
+        if (res.meta.status !== 200) return uni.$showMsg()
+        this.floorList = res.message
       },
-    
-      async getFlooList() {
-        const {data:res} = await uni.$http.get(/api/public/v1/home/floordata);
-        if(res.meta.state !== 200) return uni.$showMsg();
-        this.floorList =res.message;
-      }
-	}
+    }
+  }
 </script>
 
 <style lang="scss">
