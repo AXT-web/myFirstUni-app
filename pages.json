@@ -45,7 +45,7 @@
 	"globalStyle": {
 	"navigationBarTextStyle": "white",
 	"navigationBarTitleText": "黑马优购",
-	"navigationBarBackgroundColor": "#C0C0C0",
+	"navigationBarBackgroundColor": "#C00000",
 	"backgroundColor": "#FFFFFF"
 	},
   "easycom":{
