@@ -29,7 +29,11 @@
 </template>
 
 <script>
-  import {mapState,mapMutations,mapGetters} from 'vuex'
+  import {
+    mapState,
+    mapMutations,
+    mapGetters
+  } from 'vuex'
   export default {
     name: "my-address",
     data() {
@@ -39,7 +43,7 @@
       };
     },
     methods: {
-      ...mapMutations('m_user',['updateAddress'])
+      ...mapMutations('m_user', ['updateAddress']),
       // 选择收货地址
       async chooseAddress() {
         // 1. 调用小程序提供的 chooseAddress() 方法，即可使用选择收货地址的功能
@@ -51,26 +55,27 @@
           // 为 data 里面的收货地址对象赋值
           this.updateAddress(succ)
         }
-        
-          // 3. 用户没有授权 第一条是安卓的判定，第二条，有可能是ios系统可能的返回值。
-           if (err && (err.errMsg === 'chooseAddress:fail auth deny' || err.errMsg === 'chooseAddress:fail authorize no response')) {
-             this.reAuth()
-           }
+
+        // 3. 用户没有授权 第一条是安卓的判定，第二条，有可能是ios系统可能的返回值。
+        if (err && (err.errMsg === 'chooseAddress:fail auth deny' || err.errMsg ===
+            'chooseAddress:fail authorize no response')) {
+          this.reAuth()
+        }
       },
-      async reAuth(){
+      async reAuth() {
         // 3.1 提示用户对地址进行授权
         const [err2, confirmResult] = await uni.showModal({
           content: '检测到您没打开地址权限，是否去设置打开？',
           confirmText: "确认",
           cancelText: "取消",
         })
-      
+
         // 3.2 如果弹框异常，则直接退出
         if (err2) return
-      
+
         // 3.3 如果用户点击了 “取消” 按钮，则提示用户 “您取消了地址授权！”
         if (confirmResult.cancel) return uni.$showMsg('您取消了地址授权！')
-      
+
         // 3.4 如果用户点击了 “确认” 按钮，则调用 uni.openSetting() 方法进入授权页面，让用户重新进行授权
         if (confirmResult.confirm) return uni.openSetting({
           // 3.4.1 授权结束，需要对授权的结果做进一步判断
@@ -83,9 +88,9 @@
         })
       }
     },
-    computed::{
-      ...mapState('m_user',['address'])
-      ...mapGetters('m_user',['addstr'])
+    computed :{
+      ...mapState('m_user', ['address']),
+      ...mapGetters('m_user', ['addstr'])
     }
   }
 </script>

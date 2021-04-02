@@ -30,7 +30,7 @@
       };
     },
     computed: {
-      ...mapGetters('m_cart', ['checkedCount', 'total']),
+      ...mapGetters('m_cart', ['checkedCount', 'total', 'checkedGoodsAmount']),
       // 2. 是否全选
       isFullCheck() {
         return this.total === this.checkedCount
