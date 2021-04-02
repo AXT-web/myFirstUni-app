@@ -10,8 +10,10 @@
       <!-- 右侧的文本 -->
       <text class="cart-title-text">购物车</text>
     </view>
-
     <!-- 循环渲染购物车中的商品信息 -->
+    
+    
+    <!-- 在这里出错 应该是组件里没获得值-->
     <uni-swipe-action>
       <block v-for="(goods, i) in cart" :key="i">
         <uni-swipe-action-item :options="options" @click="swipeItemClickHandler(goods)">
