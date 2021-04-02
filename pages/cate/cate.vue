@@ -33,7 +33,10 @@
 </template>
 
 <script>
+  import badgeMix from '@/mixins/tabbar-badge.js'
   export default {
+    // 将badgeMix 混入当前页面中使用
+    mixins: [badgeMix],
     data() {
       return {
         // 当前设备可用的高度

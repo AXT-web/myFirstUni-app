@@ -1,14 +1,12 @@
 <template>
 	<view>
-		my
+		
 	</view>
 </template>
 
 <script>
-  import badgeMix from '@/mixins/tabbar-badge.js'
 	export default {
-    // 将badgeMix 混入当前页面中使用
-    mixins: [badgeMix],
+		name:"my-address",
 		data() {
 			return {
 				

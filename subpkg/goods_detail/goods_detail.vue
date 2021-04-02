@@ -20,26 +20,37 @@
         </view>
       </view>
       <!-- 运费 -->
-      <view class="yf">快递：免运费</view>
+      <view class="yf">快递：免运费 -- {{cart.length}}</view>
     </view>
     <!-- 商品详情信息 -->
     <rich-text :nodes="goods_info.goods_introduce"></rich-text>
 
     <!-- 商品导航组件 -->
-      <view class="goods_nav">
-        <!-- fill 控制右侧按钮的样式 -->
-        <!-- options 左侧按钮的配置项 -->
-        <!-- buttonGroup 右侧按钮的配置项 -->
-        <!-- click 左侧按钮的点击事件处理函数 -->
-        <!-- buttonClick 右侧按钮的点击事件处理函数 -->
-        <uni-goods-nav :fill="true" :options="options" :buttonGroup="buttonGroup" @click="onClick"
-          @buttonClick="buttonClick" />
-      </view>
+    <view class="goods_nav">
+      <!-- fill 控制右侧按钮的样式 -->
+      <!-- options 左侧按钮的配置项 -->
+      <!-- buttonGroup 右侧按钮的配置项 -->
+      <!-- click 左侧按钮的点击事件处理函数 -->
+      <!-- buttonClick 右侧按钮的点击事件处理函数 -->
+      <uni-goods-nav :fill="true" :options="options" :buttonGroup="buttonGroup" @click="onClick"
+        @buttonClick="buttonClick" />
+    </view>
   </view>
 
 </template>
 
 <script>
+  import {
+    mapState
+  } from 'vuex'
+
+  import {
+    mapMutations
+  } from 'vuex'
+
+  import {
+    mapGetters
+  } from 'vuex'
   export default {
     data() {
       return {
@@ -125,11 +136,43 @@
           }
           // 调用 addToCart 方法
           this.addToCart(goods)
-        }else{
-          
+        } else {
+
         }
+      },
+      setBadge(){
+        // 调用uni.setTabBarBadge()方法,为购物车设置右上角的徽标
+        uni.setTabBarBadge({
+          index:2,//索引
+          text:this.total+''//注意：text的值必须是字符串，不能是数字。
+        })
       }
     },
+    computed: {
+      // 调用 mapState 方法，把 m_cart 模块中的 cart 数组映射到当前页面中，作为计算属性来使用
+      // ...mapState('模块的名称', ['要映射的数据名称1', '要映射的数据名称2'])
+      ...mapState('m_cart', ['cart']),
+      ...mapState('m_cart', ['addToCart'])
+      ...mapState('m_cart', ['total'])
+    },
+    watch: {
+      // 1.监听total值的变化,通过第一个形参得到变化后的新值
+      total(newVal) {
+        handler(newVal) {
+          const findResult = this.potions.find((x) => x.text === '购物车')
+
+          if (findResult) {
+            findResult.info = newVal
+          }
+        },
+        // imediate属性用来声明此监听器,是否在页面初次加载后立即调用
+        immediate:true;
+      },
+    },
+    onShow() {
+      // 在页面刚展示的时候,设置数据徽标
+      this.setBadge()
+    }
 
   }
 </script>
@@ -185,6 +228,7 @@
       color: gray;
     }
   }
+
   .goods_nav {
     // 为商品导航组件添加固定定位
     position: fixed;
@@ -192,6 +236,7 @@
     left: 0;
     width: 100%;
   }
+
   .goods-detail-container {
     // 给页面外层的容器，添加 50px 的内padding，
     // 防止页面内容被底部的商品导航组件遮盖
