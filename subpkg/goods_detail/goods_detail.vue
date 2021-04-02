@@ -40,17 +40,7 @@
 </template>
 
 <script>
-  import {
-    mapState
-  } from 'vuex'
-
-  import {
-    mapMutations
-  } from 'vuex'
-
-  import {
-    mapGetters
-  } from 'vuex'
+  import { mapState, mapMutations, mapGetters } from 'vuex'
   export default {
     data() {
       return {
@@ -89,6 +79,7 @@
 
     },
     methods: {
+      ...mapMutations('m_cart', ['addToCart']),
       // 因为是异步请求,所以要记得用async await 或者promise包起来,别每次都忘了
       async getGoodsDetail(goods_id) {
         const {
@@ -151,23 +142,20 @@
     computed: {
       // 调用 mapState 方法，把 m_cart 模块中的 cart 数组映射到当前页面中，作为计算属性来使用
       // ...mapState('模块的名称', ['要映射的数据名称1', '要映射的数据名称2'])
-      ...mapState('m_cart', ['cart']),
-      ...mapState('m_cart', ['addToCart'])
-      ...mapState('m_cart', ['total'])
+      ...mapState('m_cart', ['']),
+      ...mapState('m_cart', ['total']),
     },
     watch: {
       // 1.监听total值的变化,通过第一个形参得到变化后的新值
-      total(newVal) {
+      total: {
         handler(newVal) {
-          const findResult = this.potions.find((x) => x.text === '购物车')
-
+          const findResult = this.options.find(x => x.text === '购物车')
           if (findResult) {
             findResult.info = newVal
           }
         },
-        // imediate属性用来声明此监听器,是否在页面初次加载后立即调用
-        immediate:true;
-      },
+        immediate: true
+      }
     },
     onShow() {
       // 在页面刚展示的时候,设置数据徽标

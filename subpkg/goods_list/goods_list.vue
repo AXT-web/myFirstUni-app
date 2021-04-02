@@ -54,7 +54,7 @@
         this.total = res.message.total
       },
       // 前往商品详情页
-      gotoDetail(){
+      gotoDetail(item){
         uni.navigateTo({
           url:'/subpkg/goods_detail/goods_detail?goods_id=' + item.goods_id
         })

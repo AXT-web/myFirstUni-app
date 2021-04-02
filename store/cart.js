@@ -20,7 +20,7 @@ export default {
 
       if (!findResult) {
         // 如果购物车没有这件商品,则直接push
-        state.cart.psh(goods)
+        state.cart.push(goods)
       } else {
         // 如果购物车有这件商品,则直接自加
         findResult.goods_count += 1
@@ -63,8 +63,25 @@ export default {
       state.cart = state.cart.filter(x => x.goods_id !== goods_id)
       // 持久化存储到本地
       this.commit('m_cart/saveToStorage')
+    },
+    // 勾选商品的总数
+    checkedCount(state) {
+      // 先用filter方法,从购物车中过滤器已勾选的商品
+      // 再使用 reduce 方法,将已勾选的商品总数量进行累加
+      // reduce() 的返回值就是已勾选的商品的总数量
+      return state.cart.filter(x => x.goods_state).reduce((total,item) => total += item.goods_count,0)
+    },
+    // 更新所有商品的勾选状态
+    updateAllGoodsState(state, newState) {
+      // 循环更新购物车中每件商品的勾选状态
+      state.cart.forEach(x => x.goods_state = newState)
+      // 持久化存储到本地
+      this.commit('m_cart/saveToStorage')
+    },
+    checkedGoodsAmount(state) {
+      return state.cart.filter(x => x.goods_state).reduce((total,item) => total += item.goods_count *item.goods_price,0).toFixed(2)
     }
-  }
+  },
   // 模块的 getters 属性
   getters: {
     // 统计购物车中的商品的总数量

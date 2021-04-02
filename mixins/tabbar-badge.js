@@ -6,6 +6,13 @@ export default {
   computed: {
     ...mapGetters('m_cart', ['total']),
   },
+  watch: {
+    // 监听total值的变化
+    total() {
+      // 调用methods 中的setBadge方法,重新为tabBar的数字徽章赋值
+      this.setBadge()
+    }
+  },
   onShow() {
     // 页面刚展示时,设置数字徽标
     this.setBadge()

@@ -31,7 +31,7 @@ Vue.config.productionTip = false
 App.mpType = 'app'
 
 const app = new Vue({
-    ...App
+    ...App,
     // 将store挂载到Vue实例上
     store,
 })
