@@ -14,6 +14,16 @@ export default {
 
   // 方法
   mutations: {
+    // 更新用户基本信息
+    updateUserInfo(state,UserInfo) {
+      state.userinfo=UserInfo
+      // 通过 this.commit()方法, 调用m_user 模块下的 saveUserInfoToStorage方法,将userinfo对象持久化存储到本地
+      this.commit('m_user/saveUserInfoToStorage')
+    },
+    // 将userinfo持久化存储到本地
+    saveUserInfoToStorage(state){
+      uni.setStorageSync('userinfo',JSON.stringify(state.userinfo))
+    },
     // 更新收货地址
     updateAddress(state, address) {
       state.address = address
@@ -42,7 +52,7 @@ export default {
     updateRedirectInfo(state, info) {
       state.redirectInfo = info
       console.log(state.redirectInfo)
-    }
+    },
   },
 
   getters: {

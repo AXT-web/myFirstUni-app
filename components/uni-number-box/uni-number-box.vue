@@ -149,6 +149,7 @@
     flex-direction: row;
     height: $box-height;
     line-height: $box-height;
+    border-radius: 5px;
     width: 120px;
   }
 
@@ -191,6 +192,7 @@
     border-top-left-radius: $uni-border-radius-base;
     border-bottom-left-radius: $uni-border-radius-base;
     border-right-width: 0;
+    border-radius: 5px 0 0 5px;
   }
 
   .uni-numbox__plus {
@@ -209,6 +211,7 @@
     border-bottom-right-radius: $uni-border-radius-base;
     background-color: $uni-bg-color-grey;
     border-left-width: 0;
+    border-radius: 0 5px 5px 0;
   }
 
   .uni-numbox--text {
